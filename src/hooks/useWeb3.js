@@ -23,7 +23,7 @@ export function useWeb3() {
                     }
                 });
 
-                await storageContract.init();
+                await storageContract.initialize();
                 const accounts = await window.ethereum.request({ method: 'eth_accounts' });
                 
                 if (accounts.length > 0) {
