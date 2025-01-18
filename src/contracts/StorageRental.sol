@@ -23,6 +23,7 @@ contract StorageRental {
     event StorageAdded(uint256 indexed spaceId, uint256 totalSpace, uint256 pricePerGB);
     event StorageRented(uint256 indexed spaceId, address indexed renter, uint256 rentedSpace, uint256 duration);
     event FileUploaded(uint256 indexed spaceId, address indexed renter, string fileHash);
+    event StorageRestored(uint256 indexed spaceId, address indexed renter, uint256 restoredSpace);
 
     constructor() {
         nextStorageId = 1;
@@ -61,6 +62,29 @@ contract StorageRental {
         userRentals[msg.sender].push(newRental);
 
         emit StorageRented(spaceId, msg.sender, spaceToRent, durationInDays);
+    }
+
+        function restoreStorage(uint256 spaceId) external {
+        StorageSpace storage space = storageSpaces[spaceId];
+        Rental[] storage rentals = userRentals[msg.sender];
+        bool found = false;
+        uint256 spaceToRestore = 0;
+        
+        for (uint i = 0; i < rentals.length; i++) {
+            if (rentals[i].spaceId == spaceId && rentals[i].isActive) {
+                spaceToRestore = rentals[i].rentedSpace;
+                rentals[i].isActive = false;
+                found = true;
+                break;
+            }
+        }
+        
+        require(found, "No active rental found for this space");
+        
+        // Restore the space
+        space.availableSpace += spaceToRestore;
+        
+        emit StorageRestored(spaceId, msg.sender, spaceToRestore);
     }
 
     function uploadFile(uint256 spaceId, string calldata fileHash) external {

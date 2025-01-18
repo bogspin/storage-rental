@@ -36,10 +36,16 @@ export class StorageContract {
     }
 
     async rentStorage(spaceId, spaceToRent, durationInDays, value) {
-        if (!this.contract) throw new Error('Contract not initialized');
+        
         const tx = await this.contract.rentStostorage(spaceId, spaceToRent, durationInDays, {
             value: value
         });
+        return tx.wait();
+    }
+
+    async restoreStorage(spaceId) {
+        if (!this.contract) throw new Error('Contract not initialized');
+        const tx = await this.contract.restoreStorage(spaceId);
         return tx.wait();
     }
 
