@@ -10,7 +10,7 @@ app.use(cors());
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     // Replace with your desired storage location
-    cb(null, '/mnt/d/Desktop/storage-backend/uploads')
+    cb(null, '/mnt/d/Desktop/storage-rental/storage-backend/uploads')
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname)

@@ -107,6 +107,25 @@ export const StorageRental = () => {
         }
     };
 
+    const restoreStorage = async (spaceId) => {
+        try {
+            setLoading(true);
+            setError('');
+            setSuccess('');
+    
+            const tx = await storageContract.contract.restoreStorage(spaceId);
+            await tx.wait();
+    
+            setSuccess('Storage space restored successfully!');
+            await loadAvailableSpaces();
+            await loadUserRentals();
+        } catch (err) {
+            setError("Failed to restore storage: " + err.message);
+        } finally {
+            setLoading(false);
+        }
+    };    
+
     const uploadFile = async (spaceId) => {
         try {
             setLoading(true);
@@ -255,6 +274,13 @@ export const StorageRental = () => {
                                             >
                                                 <Upload className="w-4 h-4 mr-2" />
                                                 Upload
+                                            </Button>
+                                            <Button
+                                                onClick={() => restoreStorage(rental.spaceId)}
+                                                disabled={loading}
+                                                variant="secondary"
+                                            >
+                                                Restore Space
                                             </Button>
                                         </div>
                                     </div>

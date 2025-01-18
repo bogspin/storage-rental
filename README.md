@@ -5,9 +5,7 @@
 - View available storage spaces and their pricing
 - Rent storage space with automated payments
 - Upload files to rented storage spaces
-- Track rental durations and space usage
 - Restore unused storage space
-- Real-time transaction updates
 
 ## Prerequisites
 
@@ -19,7 +17,7 @@
 1. Clone the repository:
 ```bash
 git clone https://github.com/bogspin/storage-rental.git
-cd decentralized-storage
+cd storage-rental
 ```
 
 2. Install dependencies:
